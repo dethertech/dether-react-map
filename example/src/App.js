@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { ExampleComponent } from 'dether-react-map'
+import { DetherReactMap } from 'dether-react-map'
 import 'dether-react-map/dist/index.css'
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+  return <DetherReactMap width='350px' height='550px' />
 }
-
 export default App

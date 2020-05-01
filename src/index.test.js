@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.'
+import { DetherReactMap } from '.'
 
-describe('ExampleComponent', () => {
+describe('DetherReactMap', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(DetherReactMap).toBeTruthy()
   })
 })
