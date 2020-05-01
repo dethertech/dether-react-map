@@ -15,12 +15,12 @@ npm install --save dether-react-map
 ```jsx
 import React, { Component } from 'react'
 
-import MyComponent from 'dether-react-map'
+import DetherReactMapfrom 'dether-react-map'
 import 'dether-react-map/dist/index.css'
 
 class Example extends Component {
   render() {
-    return <MyComponent />
+    return <DetherReactMap />
   }
 }
 ```
