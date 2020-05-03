@@ -1,24 +1,24 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import axios from 'axios'
+import config from './config/config'
 import { v4 as uuid } from 'uuid'
 import ReactMapGL, { Marker, Popup } from 'react-map-gl'
 import DeckGL, { GeoJsonLayer } from 'deck.gl'
 import Geocoder from 'react-map-gl-geocoder'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import styles from './styles.module.css'
+import { H1, Container } from './styles/mapStyle'
 
 const mapRef = React.createRef()
+const { MAPBOX_TOKEN } = config
 
-const MAPBOX_TOKEN =
-  'pk.eyJ1IjoibW9ydHlmbGV4IiwiYSI6ImNrOTkxN2Y2azBiaHYzZWs0cDZnbzZ1dDIifQ.dgfWvMiKASRgK3xuzRMd4w'
-
-export const DetherReactMap = ({ width, height, nightMode }) => {
+export const DetherReactMap = ({ width, height, nightmode }) => {
   const [markers, setMarkers] = useState([])
   const [searchResultLayer, setSearchResultLayer] = useState(null)
   const [showPopup, setShowPopup] = useState({})
   const [viewport, setViewport] = useState({
-    width,
-    height,
+    width: width || '100%',
+    height: height || '100%',
     latitude: 48.858455,
     longitude: 7.294572,
     zoom: 6
@@ -79,7 +79,7 @@ export const DetherReactMap = ({ width, height, nightMode }) => {
   }, [])
 
   return (
-    <div className={styles.container}>
+    <Container className={styles.container}>
       <ReactMapGL
         ref={mapRef}
         {...viewport}
@@ -88,19 +88,20 @@ export const DetherReactMap = ({ width, height, nightMode }) => {
         scrollZoom={false}
         doubleClickZoom={false}
         mapStyle={
-          nightMode
+          nightmode
             ? 'mapbox://styles/thecjreynolds/ck117fnjy0ff61cnsclwimyay'
             : 'mapbox://styles/mortyflex/ck9o8jlkv0nzc1imwgeqpjum0'
         }
         onViewportChange={handleViewportChange}
         mapboxApiAccessToken={MAPBOX_TOKEN}
       >
+        <H1>Dether Map</H1>
         <Geocoder
           mapRef={mapRef}
           onResult={handleOnResult}
           onViewportChange={handleGeocoderViewportChange}
           mapboxApiAccessToken={MAPBOX_TOKEN}
-          position='top-left'
+          position='top-right'
         />
         <DeckGL {...viewport} layers={[searchResultLayer]} />
         {markers.map((marker) => (
@@ -147,17 +148,7 @@ export const DetherReactMap = ({ width, height, nightMode }) => {
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
                     Aperiam, assumenda in? Quasi nulla nostrum eligendi enim,
                     veritatis repellat expedita aspernatur? Tempore ratione
-                    maiores illo at! Libero, sint architecto! Nemo iste,
-                    aspernatur at ratione laboriosam maxime quidem veritatis
-                    voluptatem eaque omnis similique sunt nisi, voluptates ipsum
-                    corrupti dolorum harum. Cum, quia. Lorem ipsum dolor sit
-                    amet consectetur adipisicing elit. Aperiam, assumenda in?
-                    Quasi nulla nostrum eligendi enim, veritatis repellat
-                    expedita aspernatur? Tempore ratione maiores illo at!
-                    Libero, sint architecto! Nemo iste, aspernatur at ratione
-                    laboriosam maxime quidem veritatis voluptatem eaque omnis
-                    similique sunt nisi, voluptates ipsum corrupti dolorum
-                    harum. Cum, quia.
+                    maiores illo at! Libero, sint architecto!
                   </p>
                   <button
                     style={{
@@ -175,6 +166,6 @@ export const DetherReactMap = ({ width, height, nightMode }) => {
           </Fragment>
         ))}
       </ReactMapGL>
-    </div>
+    </Container>
   )
 }

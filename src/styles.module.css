@@ -15,7 +15,7 @@ body {
   color: #333;
 }
 
-.container {
+/* .container {
   margin: auto;
   height: 100vh;
   width: 100vw;
@@ -24,5 +24,5 @@ body {
 }
 
 .mapboxgl-popup {
-  z-index: 1
-}
+  z-index: 1;
+} */
