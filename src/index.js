@@ -1,19 +1,28 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import axios from 'axios'
 import config from './config/config'
-import { v4 as uuid } from 'uuid'
-import ReactMapGL, { Marker, Popup } from 'react-map-gl'
+
+import getDether from './helpers/dether'
+import Geohash from 'latlon-geohash'
+import { ethers } from 'ethers'
+import ReactMapGL, { Marker } from 'react-map-gl'
 import DeckGL, { GeoJsonLayer } from 'deck.gl'
 import Geocoder from 'react-map-gl-geocoder'
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import styles from './styles.module.css'
-import { H1, Container } from './styles/mapStyle'
+import { Container, StyledPopup } from './styles/mapStyle'
+
+// DATA TEST
+import { fakeComments, fakeShops } from './data'
+import Comment from './components/Comment'
 
 const mapRef = React.createRef()
 const { MAPBOX_TOKEN } = config
 
 export const DetherReactMap = ({ width, height, nightmode }) => {
+  const [showMore, setShowMore] = useState({})
   const [markers, setMarkers] = useState([])
+  // const [allGeohashZone, setAllGeohashZone] = useState([])
   const [searchResultLayer, setSearchResultLayer] = useState(null)
   const [showPopup, setShowPopup] = useState({})
   const [viewport, setViewport] = useState({
@@ -21,17 +30,25 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
     height: height || '100%',
     latitude: 48.858455,
     longitude: 7.294572,
-    zoom: 6
+    zoom: 12
   })
 
-  const handleViewportChange = (viewport) => setViewport(viewport)
+  const addMarkers = () => setMarkers(fakeShops)
+
+  useEffect(() => {
+    addMarkers()
+  }, [])
+
+  const handleViewportChange = (viewport) => {
+    setViewport(viewport)
+  }
 
   const handleGeocoderViewportChange = (viewport) => {
     const geocoderDefaultOverrides = { transitionDuration: 1000 }
 
     return handleViewportChange({
       ...viewport,
-      zoom: 6,
+      zoom: 12,
       ...geocoderDefaultOverrides
     })
   }
@@ -49,17 +66,73 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
     )
   }
 
-  const showMarker = (e) => {
-    const [longitude, latitude] = e.lngLat
-    setMarkers([
-      ...markers,
-      {
-        id: uuid(),
-        latitude,
-        longitude
-      }
-    ])
-  }
+  // A REVOIR IMPOSSIBLE DE FETCH LES SHOPS
+
+  // const filterZoneGeohash = (newZoneGeohash) => {
+  //   const array = []
+
+  //   newZoneGeohash.forEach((element, index) => {
+  //     if (allGeohashZone.includes(element) === false) {
+  //       array.push(element)
+  //     }
+  //   })
+  //   setAllGeohashZone(...allGeohashZone, array)
+
+  //   return array
+  // }
+
+  // FETCH SHOPS
+
+  // const getShops = async (latitude, longitude) => {
+  //   // const { rpcURL } = config
+  //   // const provider = new ethers.providers.JsonRpcProvider(rpcURL)
+  //   // const detherJs = await getDether()
+
+  //   // const geoHash = Geohash.encode(latitude, longitude, 6)
+  //   // const markers = []
+
+  //   // let neighboursGeohash = []
+
+  //   // if (geoHash) {
+  //   //   Object.keys(Geohash.neighbours(geoHash)).forEach((key) => {
+  //   //     if (Geohash.neighbours(geoHash)[key])
+  //   //       neighboursGeohash.push(Geohash.neighbours(geoHash)[key])
+  //   //   })
+  //   //   neighboursGeohash.push(geoHash)
+
+  //   //   neighboursGeohash = filterZoneGeohash(neighboursGeohash)
+  //   // }
+
+  //   // if (neighboursGeohash && neighboursGeohash.length !== 0 && provider) {
+  //   //   const tellers = await detherJs.getTellersInZones(
+  //   //     neighboursGeohash,
+  //   //     provider
+  //   //   )
+
+  //   //   console.log(':: Tellers present in these 9 zones', tellers)
+  //   //   tellers.length !== 0 &&
+  //   //     tellers.forEach((marker) => {
+  //   //       markers.push(marker)
+  //       })
+
+  //     // const shops = await detherJs.getShopsInZones(neighboursGeohash, provider)
+  //     // console.log(':: SHOP present in these 9 zones', shops)
+
+  //     // const array = []
+
+  //     // shops.forEach((shopArray) => {
+  //     //   if (typeof shopArray === 'object' && shopArray.length !== 0) {
+  //     //     shopArray.forEach((val) => {
+  //     //       array.push(val)
+  //     //       console.log('OK')
+  //     //     })
+  //     //   } else {
+  //     //     array.push(shopArray)
+  //     //     console.log('NOT OK')
+  //     //   }
+  //     // })
+  //   }
+  // }
 
   const getApi = async () => {
     const { data } = await axios.get('http://ip-api.com/json/?fields=lat,lon')
@@ -84,7 +157,6 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
         ref={mapRef}
         {...viewport}
         attributionControl={false}
-        onDblClick={showMarker}
         scrollZoom={false}
         doubleClickZoom={false}
         mapStyle={
@@ -95,7 +167,6 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
         onViewportChange={handleViewportChange}
         mapboxApiAccessToken={MAPBOX_TOKEN}
       >
-        <H1>Dether Map</H1>
         <Geocoder
           mapRef={mapRef}
           onResult={handleOnResult}
@@ -104,6 +175,7 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
           position='top-right'
         />
         <DeckGL {...viewport} layers={[searchResultLayer]} />
+
         {markers.map((marker) => (
           <Fragment key={marker.latitude}>
             <Marker latitude={marker.latitude} longitude={marker.longitude}>
@@ -114,54 +186,44 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
                   height='28'
                   stroke='#FFF'
                   strokeWidth='2'
-                  fill='#2ed573'
+                  fill='#007bff'
                   strokeLinecap='round'
                   strokeLinejoin='round'
-                  style={{ transform: 'translate(-50%, -100%)' }}
+                  style={{
+                    transform: 'translate(-50%, -100%)',
+                    cursor: 'pointer'
+                  }}
                 >
-                  <path d='M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z' />
-                  <circle cx='12' cy='10' r='3' />
+                  <path d='M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z' />
+                  <line x1='3' y1='6' x2='21' y2='6' />
+                  <path d='M16 10a4 4 0 0 1-8 0' />
                 </svg>
               </div>
             </Marker>
             {showPopup[marker.id] && (
-              <Popup
-                style={{ overflow: 'hidden' }}
+              <StyledPopup
                 latitude={marker.latitude}
                 longitude={marker.longitude}
                 dynamicPosition
                 closeOnClick={false}
-                closeButton={false}
+                closeButton
                 onClose={() => setShowPopup({ [marker.id]: false })}
                 anchor='top'
               >
-                <div
-                  className='popup'
-                  style={{
-                    maxWidth: '200px',
-                    maxHeight: '250px',
-                    overflow: 'auto'
-                  }}
-                >
-                  <h6>comments</h6>
-                  <p style={{ fontSize: '0.5em' }}>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Aperiam, assumenda in? Quasi nulla nostrum eligendi enim,
-                    veritatis repellat expedita aspernatur? Tempore ratione
-                    maiores illo at! Libero, sint architecto!
-                  </p>
-                  <button
-                    style={{
-                      minWidth: '100%',
-                      padding: '.3rem',
-                      cursor: 'pointer'
-                    }}
-                    onClick={() => setShowPopup({ [marker.id]: false })}
-                  >
-                    Close
-                  </button>
-                </div>
-              </Popup>
+                <h6>Shop Test</h6>
+                {fakeComments.map((comment) => (
+                  <Comment
+                    key={comment.id}
+                    text={comment.text}
+                    date={new Date().toLocaleDateString()}
+                    rating={'⭐'.repeat(comment.rating)}
+                    show={showMore[comment.id]}
+                    click={() =>
+                      setShowMore({ [comment.id]: !showMore[comment.id] })
+                    }
+                  />
+                ))}
+              </StyledPopup>
             )}
           </Fragment>
         ))}

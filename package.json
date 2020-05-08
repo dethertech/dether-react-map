@@ -29,10 +29,14 @@
   "dependencies": {
     "axios": "^0.19.2",
     "deck.gl": "^8.1.4",
+    "detherjs": "^5.2.30",
+    "ethers": "^4.0.47",
+    "latlon-geohash": "^2.0.0",
     "react-map-gl": "^5.2.5",
     "react-map-gl-geocoder": "^2.0.11",
     "styled-components": "^5.1.0",
-    "uuid": "^8.0.0"
+    "uuid": "^8.0.0",
+    "web3": "^1.2.7"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
