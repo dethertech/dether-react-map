@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="33px" height="33px" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>icon shop</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="9.69440178" cy="9.69440178" r="9.69440178"></circle>
+        <filter x="-49.0%" y="-49.0%" width="198.0%" height="198.0%" filterUnits="objectBoundingBox" id="filter-3">
+            <feMorphology radius="2" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="map_" transform="translate(-164.000000, -247.132812)">
+            <g id="icon-shop" transform="translate(171.000000, 254.132812)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Oval-3">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-1"></use>
+                    <circle stroke="#FFFFFF" stroke-width="2" fill="#59E1CC" fill-rule="evenodd" cx="9.69440178" cy="9.69440178" r="10.6944018"></circle>
+                </g>
+                <g id="Group-10" mask="url(#mask-2)" fill="#FFFFFF">
+                    <g transform="translate(2.953600, 3.623834)">
+                        <path d="M11.1777746,2.17122675 L2.75556446,2.17122675 L2.20982676,0.519185308 C2.13485365,0.291910082 1.92268391,0.138637888 1.6834906,0.138637888 L0.554302102,0.138637888 C0.24817346,0.138637888 -2.77164911e-05,0.386839064 -2.77164911e-05,0.692967706 C-2.77164911e-05,0.999096348 0.24817346,1.24729752 0.554302102,1.24729752 L1.28284872,1.24729752 L1.82844784,2.89920038 L3.76915654,8.71010129 C3.84468397,8.93626785 4.05643797,9.08884713 4.29493837,9.08884713 L9.4571348,9.08884713 C9.70256433,9.08884713 9.91889154,8.92739857 9.98859852,8.6918084 L11.7092383,2.88284765 C11.7588508,2.71516288 11.7265611,2.53403561 11.6219313,2.39379017 C11.5173016,2.25368331 11.3526656,2.17122675 11.1777746,2.17122675 Z" id="Fill-1"></path>
+                        <path d="M5.83665432,10.9062036 C5.83665432,11.5734781 5.29562842,12.114504 4.6283539,12.114504 C3.96107938,12.114504 3.42019206,11.5734781 3.42019206,10.9062036 C3.42019206,10.2389291 3.96107938,9.69790316 4.6283539,9.69790316 C5.29562842,9.69790316 5.83665432,10.2389291 5.83665432,10.9062036" id="Fill-4"></path>
+                        <path d="M10.2799543,10.9062036 C10.2799543,11.5734781 9.73892837,12.114504 9.07165385,12.114504 C8.40437933,12.114504 7.86349201,11.5734781 7.86349201,10.9062036 C7.86349201,10.2389291 8.40437933,9.69790316 9.07165385,9.69790316 C9.73892837,9.69790316 10.2799543,10.2389291 10.2799543,10.9062036" id="Fill-7"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
