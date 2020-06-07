@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import './styles.module.css'
 import getDether from './helpers/dether'
@@ -77,32 +77,14 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
   // shopCard infos
   const [shopAddress, setShopAddress] = useState('')
   const [shopInfos, setShopInfos] = useState(false)
-  const [shopName, setShopName] = useState('')
-  const [shopCategory, setShopCategory] = useState('')
-  const [shopDescription, setShopDescription] = useState('')
-  const [shopOpening, setShopOpening] = useState('')
-  const [shopPosition, setShopPosition] = useState('')
 
-  // tellerCard infos
-  const [tellerMessenger, setTellerMessenger] = useState('')
-  const [tellerSellRate, setTellerSellRate] = useState('')
-  const [tellerBuyRate, setTellerBuyRate] = useState('')
-  const [tellerAddress, setTellerAddress] = useState('')
-  const [tellerBuyUp, setTellerBuyUp] = useState('')
-  const [tellerSellUp, setTellerSellUp] = useState('')
-  const [tellerIsBuyer, setTellerIsBuyer] = useState(false)
-  const [tellerTicker, setTellerTicker] = useState('')
   const [tellerInfos, setTellerInfos] = useState(false)
 
   const addMarkers = () => setMarkers(fakeShops)
 
   // replace componentdidmount
   useEffect(() => {
-    // get the initial position
-
     getPosition()
-
-    // addMarkers()
   }, [])
 
   const handleViewportChange = (viewport) => {
@@ -142,6 +124,17 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
     )
   }
 
+  const getShopAddress = async (positionGeohash) => {
+    const shopLatLng = getLatLong(positionGeohash)
+
+    let response = await fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=json&lat=${shopLatLng.lat}&lon=${shopLatLng.lon}&zoom=18&addressdetails=1`
+    )
+
+    let address = await response.json()
+    setShopAddress(address.display_name)
+  }
+
   // A REVOIR IMPOSSIBLE DE FETCH LES SHOPS
 
   const filterZoneGeohash = (newZoneGeohash) => {
@@ -159,7 +152,7 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
 
   const getArrayOfGeohash = async (center = null) => {
     // const countryAvailable = await this.getCountry()
-    console.log('getArrayOfGeohash')
+    // console.log('getArrayOfGeohash')
     // if (countryAvailable === true) {
     try {
       let markers = []
@@ -169,7 +162,7 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
       const provider = new ethers.providers.JsonRpcProvider(rpcURL)
       // const detherJs = new DetherJS(false)
       // await detherJs.init({ rpcURL })
-      console.log('detherJS', detherJs)
+
       const newLatLng = center
       const geoHash = Geohash.encode(newLatLng.lat, newLatLng.lon, 6)
       let neighboursGeohash = []
@@ -189,7 +182,7 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
           neighboursGeohash,
           provider
         )
-        console.log('get tellers', tellers)
+        // console.log('get tellers', tellers)
         tellers.length !== 0 &&
           tellers.forEach((marker) => {
             markers.push(marker)
@@ -200,7 +193,7 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
           provider
         )
         const array = []
-        console.log('get shops', shops)
+        // console.log('get shops', shops)
         shops.forEach((shopArray) => {
           if (typeof shopArray === 'object' && shopArray.length !== 0) {
             shopArray.forEach((val) => {
@@ -224,7 +217,7 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
               markers.push(marker)
             }
           })
-        console.log('markers', markers)
+        // console.log('markers', markers)
         setMarkers(markers)
         // this.setState({
         //   markers: [...this.state.markers, ...markers],
@@ -269,10 +262,8 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
   // use default localisation
   const getPosition = async () => {
     const { data } = await axios.get('http://ip-api.com/json/?fields=lat,lon')
-    console.log('getPosition data =>', data, data.lat)
-    // console.log('latLng', latLng)
+
     if (data.lat) {
-      console.log('1st if')
       try {
         setLat(data.lat)
         setLon(data.lon)
@@ -285,8 +276,6 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
         console.warn(error)
       }
     } else {
-      console.log('2nd if')
-
       setLat(latLng.lat)
       setLon(latLng.lon)
       setViewport({
@@ -328,8 +317,21 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
     return Geohash.decode(geohash)
   }
 
+  const showShop = async (marker) => {
+    console.log('shop marker', marker)
+    await getShopAddress(marker.position)
+    setShopInfos(true)
+    setTellerInfos(false)
+    setMarker(marker)
+  }
+
+  const showTeller = (marker) => {
+    setTellerInfos(true)
+    setShopInfos(false)
+    setMarker(marker)
+  }
+
   const viewPortChange = (viewport, zoom) => {
-    console.log('viewport changed => ', viewport)
     setLat(viewport.center[0])
     setLon(viewport.center[1])
     var distanceKm = distanceLatLng(
@@ -339,7 +341,7 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
       viewport.center[1],
       'K'
     )
-    console.log('distanceKm', distanceKm)
+
     if (
       viewport &&
       viewport.center &&
@@ -356,129 +358,124 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
 
   // const renderMap = () => {
   return (
-    <Map
-      closePopupOnClick={false}
-      zoomControl={false}
-      center={[lat, lon]}
-      zoom={14}
-      preferCanvas
-      removeAttribution={true}
-      attributionControl={false}
-      onViewportChanged={(viewport, zoom) => viewPortChange(viewport, zoom)}
-    >
-      {/* <Search /> */}
-      <ReactLeafletSearch
+    <div>
+      <Map
+        style={{ width: width, height: height }}
+        closePopupOnClick={false}
+        zoomControl={false}
+        center={[lat, lon]}
         zoom={14}
-        closeResultsOnClick
-        showPopup={false}
-        showMarker={false}
-        position='topleft'
-        inputPlaceholder={'searchbar'}
-        // inputPlaceholder={intl.formatMessage({
-        //   id: 'map.searchbar.placeholder'
-        // })}
-      />
-      <TileLayer
-        url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png'
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        minZoom={14}
-      />
-      <Button
-        style={{
-          zIndex: 900,
-          position: 'relative',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          top: '60px',
-          height: '40px',
-          fontSize: '10px'
-        }}
-        appearance='contained'
-        rounded
-        // disabled={countryAvailable === false ? true : false}
-        onClick={() => reloadMap()}
+        preferCanvas
+        removeAttribution={true}
+        attributionControl={false}
+        onViewportChanged={(viewport, zoom) => viewPortChange(viewport, zoom)}
       >
-        {/* <FormattedMessage
+        {/* <Search /> */}
+        <ReactLeafletSearch
+          zoom={14}
+          closeResultsOnClick
+          showPopup={false}
+          showMarker={false}
+          position='topleft'
+          inputPlaceholder={'searchbar'}
+          // inputPlaceholder={intl.formatMessage({
+          //   id: 'map.searchbar.placeholder'
+          // })}
+        />
+        <TileLayer
+          url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png'
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          minZoom={14}
+        />
+        <Button
+          style={{
+            zIndex: 900,
+            position: 'relative',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            top: '60px',
+            height: '40px',
+            fontSize: '10px'
+          }}
+          appearance='contained'
+          rounded
+          // disabled={countryAvailable === false ? true : false}
+          onClick={() => reloadMap()}
+        >
+          {/* <FormattedMessage
             id='home.buy.buttonRefresh'
             defaultMessage='REFRESH'
           /> */}
-        Refresh
-      </Button>
+          Refresh
+        </Button>
 
-      {markers &&
-        markers.length !== 0 &&
-        markers.map((marker, index) => {
-          console.log('marker ', marker)
-          if (marker.tellerGeohash && getLatLong(marker.tellerGeohash)) {
-            console.log('marker if 1 ', marker)
-            return (
-              <Marker
-                onClick={() => {
-                  setTellerInfos(true)
-                  setShopInfos(false)
-                  setMarker(marker)
-                }}
-                key={index}
-                icon={SellerIcon}
-                position={[
-                  getLatLong(marker.tellerGeohash).lat,
-                  getLatLong(marker.tellerGeohash).lon
-                ]}
-              />
-            )
+        {markers &&
+          markers.length !== 0 &&
+          markers.map((marker, index) => {
+            if (marker.tellerGeohash && getLatLong(marker.tellerGeohash)) {
+              return (
+                <Marker
+                  onClick={() => showTeller(marker)}
+                  key={index}
+                  icon={SellerIcon}
+                  position={[
+                    getLatLong(marker.tellerGeohash).lat,
+                    getLatLong(marker.tellerGeohash).lon
+                  ]}
+                />
+              )
+            }
+            if (marker.position && getLatLong(marker.position)) {
+              return (
+                <Marker
+                  onClick={() => showShop(marker)}
+                  key={index}
+                  icon={ShoppingCartIcon}
+                  position={[
+                    getLatLong(marker.position).lat,
+                    getLatLong(marker.position).lon
+                  ]}
+                />
+              )
+            } else return ''
+          })}
+
+        <ShopCard
+          address={shopAddress}
+          show={shopInfos}
+          close={() => setShopInfos(false)}
+          name={marker.name}
+          category={marker.category}
+          description={marker.description}
+          opening={marker.opening}
+          position={marker.position}
+          // setShowReviews={() =>
+          //   this.setState({ showReviews: true, tellerInfos: false })
+          // }
+        />
+
+        <TellerCard
+          messenger={marker.messenger ? marker.messenger : 'undefined'}
+          sellRate={marker.sellRate ? marker.sellRate : 0}
+          buyRate={marker.buyRate ? marker.buyRate : 0}
+          tellerAddress={
+            marker.tellerAddress
+              ? marker.tellerAddress
+              : '0x0000000000000000000000000000000000000000'
           }
-          if (marker.position && getLatLong(marker.position)) {
-            console.log('marker if 2 ', marker)
-            return (
-              <Marker
-                onClick={() => {
-                  setTellerInfos(false)
-                  setShopInfos(true)
-                  setMarker(marker)
-                }}
-                key={index}
-                icon={ShoppingCartIcon}
-                position={[
-                  getLatLong(marker.position).lat,
-                  getLatLong(marker.position).lon
-                ]}
-              />
-            )
-          } else return ''
-        })}
-
-      <ShopCard
-        address={shopAddress}
-        show={shopInfos}
-        close={() => setShopInfos(false)}
-        name={shopName}
-        category={shopCategory}
-        description={shopDescription}
-        opening={shopOpening}
-        position={shopPosition}
-        // setShowReviews={() =>
-        //   this.setState({ showReviews: true, tellerInfos: false })
-        // }
-      />
-
-      <TellerCard
-        messenger={tellerMessenger}
-        sellRate={tellerSellRate}
-        buyRate={tellerBuyRate}
-        tellerAddress={tellerAddress}
-        buyUp={tellerBuyUp}
-        sellUp={tellerSellUp}
-        isBuyer={tellerIsBuyer}
-        ticker={tellerTicker}
-        show={tellerInfos}
-        // setShowReviews={() =>
-        //   this.setState({ showReviews: true, tellerInfos: false })
-        // }
-        currencyName={currencyFormater()}
-        close={() => setTellerInfos(false)}
-      />
-    </Map>
-
+          buyUp={marker.buyUp ? marker.buyUp : '?'}
+          sellUp={marker.sellUp ? marker.sellUp : '?'}
+          isBuyer={marker.isBuyer ? marker.isBuyer : false}
+          ticker={marker.ticker ? marker.ticker : '?'}
+          show={tellerInfos}
+          // setShowReviews={() =>
+          //   this.setState({ showReviews: true, tellerInfos: false })
+          // }
+          currencyName={currencyFormater()}
+          close={() => setTellerInfos(false)}
+        />
+      </Map>
+    </div>
     // {loader === true ? <LoaderMap /> : ''}
   )
 }

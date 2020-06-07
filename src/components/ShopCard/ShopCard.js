@@ -12,8 +12,15 @@ import { getOpeningUnformated } from '../../helpers'
  */
 // import { appActions } from '../../actions'
 
-import './ShopCard.css'
+// import './ShopCard.css'
 import { FormattedMessage } from 'react-intl'
+import {
+  StyledContainer,
+  StyledCard,
+  StyledDivBW,
+  StyledCardHeader,
+  StyledCardBody
+} from './ShopCardStyle'
 
 class ShopCard extends Component {
   state = {}
@@ -26,15 +33,22 @@ class ShopCard extends Component {
 
   renderHours = () => {
     const { opening } = this.props
-
+    console.log('opening', opening)
     const openingUnformated = getOpeningUnformated(opening)
-
+    console.log('openingUnformated', openingUnformated)
     return openingUnformated.map((opening, index) => {
       const dayArr = opening.split('/')
       return (
-        <p className='shop-timing'>
-          <span className='day'>{dayArr[0]}</span>
-          <span className='timing'>{dayArr[1]}</span>
+        <p
+          style={{
+            display: 'block',
+            height: '1px',
+            lineHeight: '0px',
+            color: '#000'
+          }}
+        >
+          <span style={{ float: 'left' }}>{dayArr[0]}</span>
+          <span style={{ float: 'right' }}>{dayArr[1]}</span>
         </p>
       )
     })
@@ -56,28 +70,49 @@ class ShopCard extends Component {
         &#10029;
       </span>
     )
-    let drawerClasses = 'shopCard-drawer'
-    if (show) {
-      drawerClasses = 'shopCard-drawer open'
-    }
-
+    // let drawerClasses = 'shopCard-drawer'
+    // if (show) {
+    //   drawerClasses = 'shopCard-drawer open'
+    // }
     return (
-      <div className={drawerClasses}>
-        <Card className='background-transparent'>
-          <div className='background-white'>
+      <StyledContainer show={show}>
+        <StyledCard>
+          <StyledDivBW>
             <div onClick={close} style={{ float: 'right', margin: '10px' }}>
               <Icon size='sm' color='primary' name='close' />
             </div>
             <div style={{ float: 'left', margin: '15px' }}>
               <Icon name='shoppingCart' color='primary' size='md' />
             </div>
-            <CardHeader className='no-border'>
+            <StyledCardHeader>
               <Row className='shop-row'>
                 <Col>
-                  <CardTitle>{name}</CardTitle>
-                  <span className='shop-sub-tile'>{category}</span>
+                  <CardTitle
+                    style={{
+                      color: '#3c80f1',
+                      fontSize: '19px',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    {name}
+                  </CardTitle>
+                  <span
+                    style={{
+                      lineHeight: 0,
+                      display: 'block'
+                    }}
+                  >
+                    {category}
+                  </span>
                   <br />
-                  <span className='shop-address'>
+                  <span
+                    style={{
+                      lineHeight: 0,
+                      color: '#3c80f1',
+                      fontSize: '11px',
+                      textAlign: 'center'
+                    }}
+                  >
                     <em
                       onClick={() =>
                         window.open(
@@ -105,25 +140,26 @@ class ShopCard extends Component {
                       }}
                     >
                       {/* <FormattedMessage id='modal.review.rev' /> */}
-                      modal.review.rev
+                      Review
                     </span>
                   </span>
                 </Col>
               </Row>
-            </CardHeader>
+            </StyledCardHeader>
 
-            <CardBody className='no-border'>
+            <StyledCardBody className='no-border'>
               <p className='shop-website'>{description}</p>
-              <div className='shop-timing-container'>
+              <div
+                style={{
+                  padding: '0px 15px'
+                }}
+              >
                 <this.renderHours />
               </div>
-            </CardBody>
-            <div style={bottomPadding} />
-          </div>
-          <div style={bottomPadding} />
-          <div style={bottomPadding} />
-        </Card>
-      </div>
+            </StyledCardBody>
+          </StyledDivBW>
+        </StyledCard>
+      </StyledContainer>
     )
   }
 }

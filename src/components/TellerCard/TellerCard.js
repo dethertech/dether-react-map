@@ -18,17 +18,26 @@ import { bottomPadding } from '../../styles/platformLayout'
 // import ReviewsModal from '../ReviewsModal'
 import styled from 'styled-components'
 import TokenIcon from '../../components/TokenIcon'
+import {
+  StyledContainer,
+  StyledP,
+  StyledCard,
+  StyledDivBW,
+  StyledCardHeader,
+  StyledCardTitle,
+  StyledCardBody,
+  StyledCardFooter,
+  StyledTelegramButton
+} from './TellerCardStyle'
 
 /**
  * Actions
  */
 // import { appActions, apiActions, chatActions } from '../../actions'
 
-import './TellerCard.css'
+// import './TellerCard.css'
 import { FormattedMessage } from 'react-intl'
-const StyledP = styled.p`
-  margin-bottom: -100px;
-`
+
 class TellerCard extends Component {
   state = {
     redirect: false,
@@ -138,7 +147,8 @@ class TellerCard extends Component {
       tellerAddress,
       setShowReviews,
       intl,
-      ticker
+      ticker,
+      style
     } = this.props
     const { redirect, path, chatErrMess, showReviews } = this.state
 
@@ -148,14 +158,13 @@ class TellerCard extends Component {
       </span>
     )
 
-    let drawerClasses = 'tellerCard-drawer'
+    // let drawerClasses = 'tellerCard-drawer'
 
-    const hasNoPgpKey = typeof chatErrMess[tellerAddress] !== 'undefined'
+    // if (show) {
 
-    if (show) {
-      drawerClasses = 'tellerCard-drawer open'
-    }
-
+    //   drawerClasses = 'tellerCard-drawer open'
+    // }
+    console.log('show TELLER', show)
     // if (showReviews) {
     //   return (
     //     <ReviewsModal
@@ -170,15 +179,15 @@ class TellerCard extends Component {
     // }
 
     return (
-      <div className={drawerClasses}>
-        <Card width='50%' className='background-transparent'>
-          <div className='background-white'>
+      <StyledContainer show={show}>
+        <StyledCard width='50%'>
+          <StyledDivBW>
             <div onClick={close} style={{ float: 'right', margin: '10px' }}>
               <Icon size='sm' color='primary' name='close' />
             </div>
-            <CardHeader className='no-border'>
-              <Row className='teller-row'>
-                <CardTitle className='card-title'>
+            <StyledCardHeader>
+              <Row>
+                <StyledCardTitle>
                   <div
                     style={{ display: 'flex', justifyContent: 'flex-between' }}
                   >
@@ -235,58 +244,114 @@ class TellerCard extends Component {
                       </span>
                     </div>
                   </div>
-                </CardTitle>
+                </StyledCardTitle>
               </Row>
-            </CardHeader>
+            </StyledCardHeader>
 
-            <CardBody className='no-border'>
+            <StyledCardBody>
               <Row className='row-border'>
-                <Col className='col-border'>
-                  <p className='text-header'>
-                    sell
+                <Col
+                  style={{
+                    borderRight: '1px solid #4282f1'
+                  }}
+                >
+                  <p
+                    style={{
+                      lineHeight: '0px',
+                      color: '#4282f1'
+                    }}
+                  >
+                    I sell up to
                     {/* <FormattedMessage id='home.buy.card.sell' /> */}
                   </p>
-                  <p className='text-sub-header'>
+                  <p
+                    style={{
+                      lineHeight: '0px',
+                      color: '#121e38',
+                      fontSize: '20px',
+                      fontWeight: 'bold'
+                    }}
+                  >
                     {sellUp} <span>{currencyName}</span>
                   </p>
                 </Col>
                 <Col>
-                  <p className='text-header'>
+                  <p
+                    style={{
+                      lineHeight: '0px',
+                      color: '#4282f1'
+                    }}
+                  >
                     fees
                     {/* <FormattedMessage id='home.buy.card.fees' /> */}
                   </p>
-                  <p className='text-sub-header'>
+                  <p
+                    style={{
+                      lineHeight: '0px',
+                      color: '#121e38',
+                      fontSize: '20px',
+                      fontWeight: 'bold'
+                    }}
+                  >
                     {sellRate} <span>%</span>
                   </p>
                 </Col>
               </Row>
               {isBuyer && (
                 <Row>
-                  <Col className='col-border'>
-                    <p className='text-header'>
-                      buy
+                  <Col
+                    style={{
+                      borderRight: '1px solid #4282f1'
+                    }}
+                  >
+                    <p
+                      style={{
+                        lineHeight: '0px',
+                        color: '#4282f1'
+                      }}
+                    >
+                      I buy up to
                       {/* <FormattedMessage id='home.buy.card.buy' /> */}
                     </p>
-                    <p className='text-sub-header'>
+                    <p
+                      style={{
+                        lineHeight: '0px',
+                        color: '#121e38',
+                        fontSize: '20px',
+                        fontWeight: 'bold'
+                      }}
+                    >
                       {buyUp} <span>{currencyName}</span>
                     </p>
                   </Col>
                   <Col>
-                    <p className='text-header'>
+                    <p
+                      style={{
+                        lineHeight: '0px',
+                        color: '#4282f1'
+                      }}
+                    >
                       buy fees
                       {/* <FormattedMessage id='home.buy.card.fees' /> */}
                     </p>
-                    <p className='text-sub-header'>
+                    <p
+                      style={{
+                        lineHeight: '0px',
+                        color: '#121e38',
+                        fontSize: '20px',
+                        fontWeight: 'bold'
+                      }}
+                    >
                       {buyRate} <span>%</span>
                     </p>
                   </Col>
                 </Row>
               )}
-            </CardBody>
-          </div>
-          <CardFooter className='background-transparent'>
+            </StyledCardBody>
+          </StyledDivBW>
+          <StyledCardFooter>
             <Row>
-              <Col>
+              {/* <Col>
                 {hasNoPgpKey ? (
                   chatErrMess[tellerAddress]
                 ) : (
@@ -300,18 +365,18 @@ class TellerCard extends Component {
                     Chat
                   </Button>
                 )}
-              </Col>
+              </Col> */}
               {messenger && (
-                <Col className='col-md-auto'>
-                  <a
+                <Col>
+                  <StyledTelegramButton
                     style={{ width: '100%', whiteSpace: 'nowrap' }}
-                    className='telegram btn btn-primary'
+                    className='btn btn-primary'
                     rel='noopener noreferrer'
                     href={`https://t.me/${messenger}`}
                     target='_blank'
                   >
                     Telegram
-                  </a>
+                  </StyledTelegramButton>
                 </Col>
               )}
               {/* <Col align="center">
@@ -327,11 +392,11 @@ class TellerCard extends Component {
               </Col> */}
             </Row>
             <div style={bottomPadding} />
-          </CardFooter>
+          </StyledCardFooter>
           <div style={bottomPadding} />
           <div style={bottomPadding} />
-        </Card>
-      </div>
+        </StyledCard>
+      </StyledContainer>
     )
   }
 }
