@@ -3,16 +3,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Icon } from 'dether-ui'
 
-import { Card, CardBody, CardTitle, CardHeader, Row, Col } from 'reactstrap'
-import { bottomPadding } from '../../styles/platformLayout'
+import { CardTitle, Row, Col } from 'reactstrap'
 
 import { getOpeningUnformated } from '../../helpers'
-/**
- * Actions
- */
-// import { appActions } from '../../actions'
 
-// import './ShopCard.css'
 import { FormattedMessage } from 'react-intl'
 import {
   StyledContainer,
@@ -33,9 +27,9 @@ class ShopCard extends Component {
 
   renderHours = () => {
     const { opening } = this.props
-    console.log('opening', opening)
+
     const openingUnformated = getOpeningUnformated(opening)
-    console.log('openingUnformated', openingUnformated)
+
     return openingUnformated.map((opening, index) => {
       const dayArr = opening.split('/')
       return (
@@ -170,11 +164,5 @@ ShopCard.propTypes = {
   children: PropTypes.node.isRequired,
   setShowReviews: PropTypes.func.isRequired
 }
-
-// const mapDispatchToProps = {
-//   setSideDrawerOpen: appActions.setSideDrawerOpen
-// }
-
-//export default withRouter(connect(null, mapDispatchToProps)(ShopCard))
 
 export default ShopCard

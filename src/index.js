@@ -50,20 +50,17 @@ const SellerIcon = new L.Icon({
   iconRetinaUrl: require('./assets/Seller.svg')
 })
 
-// const mapRef = React.createRef()
-// const { MAPBOX_TOKEN } = config
-
 export const DetherReactMap = ({ width, height, nightmode }) => {
-  const [showMore, setShowMore] = useState({})
+  // const [showMore, setShowMore] = useState({})
   const [markers, setMarkers] = useState([])
+  const [tellerMarkers, setTellerMarkers] = useState([])
+  const [shopMarkers, setShopMarkers] = useState([])
   const [marker, setMarker] = useState({})
   // const [allGeohashZone, setAllGeohashZone] = useState([])
-  const [searchResultLayer, setSearchResultLayer] = useState(null)
-  const [showPopup, setShowPopup] = useState({})
-  const [position, setPosition] = useState({})
+  // const [searchResultLayer, setSearchResultLayer] = useState(null)
   const [lat, setLat] = useState(0)
   const [lon, setLon] = useState(0)
-  const [loader, setLoader] = useState({})
+  // const [loader, setLoader] = useState({})
   const [allGeohashZone, setAllGeohashZone] = useState([])
   const [latLng, setLatLng] = useState(Geohash.decode('xn0m7m'))
   const [viewport, setViewport] = useState({
@@ -80,9 +77,6 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
 
   const [tellerInfos, setTellerInfos] = useState(false)
 
-  const addMarkers = () => setMarkers(fakeShops)
-
-  // replace componentdidmount
   useEffect(() => {
     getPosition()
   }, [])
@@ -111,18 +105,18 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
     return currencies[name]
   }
 
-  const handleOnResult = (e) => {
-    setSearchResultLayer(
-      new GeoJsonLayer({
-        id: 'search-result',
-        data: e.result.geometry,
-        getFillColor: [255, 0, 0, 128],
-        getRadius: 1000,
-        pointRadiusMinPixels: 10,
-        pointRadiusMaxPixels: 10
-      })
-    )
-  }
+  // const handleOnResult = (e) => {
+  //   setSearchResultLayer(
+  //     new GeoJsonLayer({
+  //       id: 'search-result',
+  //       data: e.result.geometry,
+  //       getFillColor: [255, 0, 0, 128],
+  //       getRadius: 1000,
+  //       pointRadiusMinPixels: 10,
+  //       pointRadiusMaxPixels: 10
+  //     })
+  //   )
+  // }
 
   const getShopAddress = async (positionGeohash) => {
     const shopLatLng = getLatLong(positionGeohash)
@@ -134,8 +128,6 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
     let address = await response.json()
     setShopAddress(address.display_name)
   }
-
-  // A REVOIR IMPOSSIBLE DE FETCH LES SHOPS
 
   const filterZoneGeohash = (newZoneGeohash) => {
     const array = []
@@ -150,18 +142,26 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
     return array
   }
 
+  const mergeArrays = (...arrays) => {
+    let jointArray = []
+
+    arrays.forEach((array) => {
+      jointArray = [...jointArray, ...array]
+    })
+    const uniqueArray = jointArray.filter(
+      (item, index) => jointArray.indexOf(item) === index
+    )
+    return uniqueArray
+  }
+
   const getArrayOfGeohash = async (center = null) => {
-    // const countryAvailable = await this.getCountry()
-    // console.log('getArrayOfGeohash')
-    // if (countryAvailable === true) {
     try {
-      let markers = []
+      let tellerArray = []
+      const shopsArray = []
       const { rpcURL } = config
       const detherJs = await getDether()
 
       const provider = new ethers.providers.JsonRpcProvider(rpcURL)
-      // const detherJs = new DetherJS(false)
-      // await detherJs.init({ rpcURL })
 
       const newLatLng = center
       const geoHash = Geohash.encode(newLatLng.lat, newLatLng.lon, 6)
@@ -176,53 +176,52 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
         neighboursGeohash = filterZoneGeohash(neighboursGeohash)
       }
       if (neighboursGeohash && neighboursGeohash.length !== 0 && provider) {
-        // get tellers data
-
         const tellers = await detherJs.getTellersInZones(
           neighboursGeohash,
           provider
         )
-        // console.log('get tellers', tellers)
+
         tellers.length !== 0 &&
           tellers.forEach((marker) => {
-            markers.push(marker)
+            if (typeof marker === 'object' && marker.isSeller) {
+              tellerArray.push(marker)
+            }
           })
+
+        const addressContractTelller = new Set(
+          tellerArray.map((d) => d.tellerContractAddress)
+        )
+        const mergedTellers = [
+          ...tellerArray,
+          ...tellerMarkers.filter(
+            (d) => !addressContractTelller.has(d.tellerContractAddress)
+          )
+        ]
+        setTellerMarkers(mergedTellers)
 
         const shops = await detherJs.getShopsInZones(
           neighboursGeohash,
           provider
         )
-        const array = []
-        // console.log('get shops', shops)
+
         shops.forEach((shopArray) => {
           if (typeof shopArray === 'object' && shopArray.length !== 0) {
             shopArray.forEach((val) => {
-              array.push(val)
+              shopsArray.push(val)
             })
-          } else {
-            array.push(shopArray)
           }
         })
 
-        array.length !== 0 &&
-          array.forEach((marker) => {
-            if (markers && markers.length !== 0) {
-              const index = markers.findIndex(
-                (val) => val.name && val.name === marker.name
-              )
-              if (index === -1) {
-                markers.push(marker)
-              }
-            } else {
-              markers.push(marker)
-            }
-          })
-        // console.log('markers', markers)
-        setMarkers(markers)
-        // this.setState({
-        //   markers: [...this.state.markers, ...markers],
-        //   loader: false
-        // })
+        const addressShop = new Set(shopsArray.map((d) => d.address))
+        const mergedShop = [
+          ...shopsArray,
+          ...shopMarkers.filter((d) => !addressShop.has(d.address))
+        ]
+
+        setShopMarkers(mergedShop)
+        const mergedMarkers = [...mergedTellers, ...mergedShop]
+
+        setMarkers(mergedMarkers)
         setLoader(false)
       } else setLoader(false)
     } catch (e) {
@@ -237,29 +236,8 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
       lat,
       lon
     })
-    // this.setState(
-    //   {
-    //     loader: true,
-    //     latLng: {
-    //       lat: this.lat ? this.lat : this.state.latLng.lat,
-    //       lon: this.lon ? this.lon : this.state.latLng.lon,
-    //     },
-    //   },
-    //   () => {
-    //     this.getArrayOfGeohash({
-    //       lat: this.lat ? this.lat : this.state.latLng.lat,
-    //       lon: this.lon ? this.lon : this.state.latLng.lon,
-    //     })
-    //   },
-    // )
   }
 
-  // TO DO
-  // 1. get device geoloc
-  // if not
-  // 2. get data from ip-api
-  // if not
-  // use default localisation
   const getPosition = async () => {
     const { data } = await axios.get('http://ip-api.com/json/?fields=lat,lon')
 
@@ -318,7 +296,6 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
   }
 
   const showShop = async (marker) => {
-    console.log('shop marker', marker)
     await getShopAddress(marker.position)
     setShopInfos(true)
     setTellerInfos(false)
@@ -341,12 +318,12 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
       viewport.center[1],
       'K'
     )
-
+    console.log('distanceKm', distanceKm)
     if (
       viewport &&
       viewport.center &&
       viewport.center.length !== 0 &&
-      distanceKm > 20
+      distanceKm > 1
     ) {
       setLatLng({ lat: viewport.center[0], lon: viewport.center[1] })
       getArrayOfGeohash({

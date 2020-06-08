@@ -4,16 +4,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Icon, Text } from 'dether-ui'
 
-import {
-  Card,
-  CardBody,
-  CardTitle,
-  CardHeader,
-  CardFooter,
-  Button,
-  Row,
-  Col
-} from 'reactstrap'
+import { Row, Col } from 'reactstrap'
 import { bottomPadding } from '../../styles/platformLayout'
 // import ReviewsModal from '../ReviewsModal'
 import styled from 'styled-components'
@@ -35,7 +26,6 @@ import {
  */
 // import { appActions, apiActions, chatActions } from '../../actions'
 
-// import './TellerCard.css'
 import { FormattedMessage } from 'react-intl'
 
 class TellerCard extends Component {
@@ -45,31 +35,8 @@ class TellerCard extends Component {
     showReviews: false
   }
 
-  componentDidMount = () => {
-    // const { setSellerAddress } = this.props
-    // emptyNoPgpKeyAddr()
-    // setSellerAddress('')
-  }
-
   componentWillUnmount = () => {
     this.setState({ chatErrMess: {} })
-  }
-
-  componentDidUpdate = (prevProps) => {
-    // const { sellerAddress, tellerAddress, noPgpKeyAddr } = this.props
-    // if (
-    //   prevProps.sellerAddress !== sellerAddress &&
-    //   sellerAddress === tellerAddress
-    // ) {
-    //   this.openChatChannel(tellerAddress)
-    // }
-    // // if (typeof prevProps.noPgpKeyAddr !== 'undefined') {
-    // if (
-    //   prevProps.noPgpKeyAddr.length !== noPgpKeyAddr.length &&
-    //   noPgpKeyAddr.includes(tellerAddress)
-    // ) {
-    //   this.setNoChat('User has not enabled chat yet')
-    // }
   }
 
   toggleShowReviews = () => {
@@ -146,11 +113,10 @@ class TellerCard extends Component {
       isBuyer,
       tellerAddress,
       setShowReviews,
-      intl,
-      ticker,
-      style
+
+      ticker
     } = this.props
-    const { redirect, path, chatErrMess, showReviews } = this.state
+    // const { redirect, path, chatErrMess, showReviews } = this.state
 
     const fullStarSymb = (
       <span style={{ color: 'gold', fontSize: '21px', marginRight: '1.5px' }}>
@@ -164,7 +130,7 @@ class TellerCard extends Component {
 
     //   drawerClasses = 'tellerCard-drawer open'
     // }
-    console.log('show TELLER', show)
+
     // if (showReviews) {
     //   return (
     //     <ReviewsModal
@@ -404,33 +370,9 @@ class TellerCard extends Component {
 TellerCard.propTypes = {
   show: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
-  // apiGetPinataPins: PropTypes.func.isRequired,
-  // setSellerAddress: PropTypes.func.isRequired,
-  // pgpPubKeys: PropTypes.object.isRequired,
   sellerAddress: PropTypes.string.isRequired,
-  // noPgpKeyAddr: PropTypes.array.isRequired,
-  // emptyNoPgpKeyAddr: PropTypes.func.isRequired,
   setShowReviews: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired
 }
-
-// const mapStateToProps = ({ chat }) => ({
-//   pgpPubKeys: chat.pgpPubKeys,
-//   noPgpKeyAddr: chat.noPgpKeyAddr,
-//   sellerAddress: chat.sellerAddress
-// })
-
-// const mapDispatchToProps = {
-//   apiGetPinataPins: apiActions.apiGetPinataPins,
-//   setSideDrawerOpen: appActions.setSideDrawerOpen,
-//   setSellerAddress: chatActions.setSellerAddress,
-//   addNoPgpKeyAddr: chatActions.addNoPgpKeyAddr,
-//   emptyNoPgpKeyAddr: chatActions.emptyNoPgpKeyAddr
-// }
-
-// export default withRouter(
-//   // injectIntl(connect(mapStateToProps, mapDispatchToProps)(TellerCard)),
-//   injectIntl(connect(null, null)(TellerCard))
-// )
 
 export default TellerCard
