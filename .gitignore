@@ -21,6 +21,8 @@ dist
 .editorconfig
 .travis.yml
 .prettierrc
+.eslintignore
+package-lock.json
 
 
 npm-debug.log*
