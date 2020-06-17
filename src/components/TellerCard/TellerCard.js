@@ -7,7 +7,6 @@ import { Icon, Text } from 'dether-ui'
 import { Row, Col } from 'reactstrap'
 import { bottomPadding } from '../../styles/platformLayout'
 // import ReviewsModal from '../ReviewsModal'
-import styled from 'styled-components'
 import TokenIcon from '../../components/TokenIcon'
 import {
   StyledContainer,

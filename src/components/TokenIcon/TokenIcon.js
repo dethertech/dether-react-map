@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import ReactImageFallback from 'react-image-fallback'
 import LoaderSpinner from 'react-loader-spinner'
-import { buildTrustWalletUrl } from '../../helpers'
+// import { buildTrustWalletUrl } from '../../helpers'
 import { availableTokens } from '../../constants/tokens'
 import { Svg } from '..'
 
@@ -50,16 +50,16 @@ function TokenIcon({
   tokenInfo = {},
   height,
   width,
-  verticalAlign,
+  verticalAlign
 }) {
   const style = {
     width: width ? width : 32,
     height: height ? height : 32,
-    verticalAlign: verticalAlign ? verticalAlign : '',
+    verticalAlign: verticalAlign ? verticalAlign : ''
   }
 
   const initImage = (
-    <LoaderSpinner type="TailSpin" color="#5F78FF" height={30} width={30} />
+    <LoaderSpinner type='TailSpin' color='#5F78FF' height={30} width={30} />
   )
 
   const fullName =
@@ -67,21 +67,21 @@ function TokenIcon({
     tokenInfo[tokenName.toUpperCase()].name
 
   const tokens = availableTokens.filter(
-    token =>
+    (token) =>
       token.toUpperCase() === tokenName.toUpperCase() ||
-      (fullName && token.toUpperCase() === fullName.toUpperCase()),
+      (fullName && token.toUpperCase() === fullName.toUpperCase())
   )
 
-  const trustWalletFallback = (
-    <ReactImageFallback
-      src={buildTrustWalletUrl(tokenName, tokenAddress)}
-      style={style}
-      initialImage={initImage}
-      fallbackImage={erc20Icon}
-      alt={`${tokenName}-icon`}
-      className={`iconImage${tokenName}`}
-    />
-  )
+  // const trustWalletFallback = (
+  //   <ReactImageFallback
+  //     src={buildTrustWalletUrl(tokenName, tokenAddress)}
+  //     style={style}
+  //     initialImage={initImage}
+  //     fallbackImage={erc20Icon}
+  //     alt={`${tokenName}-icon`}
+  //     className={`iconImage${tokenName}`}
+  //   />
+  // )
 
   // if in local SVG files
   if (tokens.length > 0) {
@@ -105,7 +105,7 @@ function TokenIcon({
         src={localSrc}
         style={style}
         initialImage={initImage}
-        fallbackImage={trustWalletFallback}
+        // fallbackImage={trustWalletFallback}
         alt={`${tokenName}-icon`}
         className={`iconImage${tokenName}`}
       />
@@ -116,11 +116,11 @@ function TokenIcon({
 TokenIcon.propTypes = {
   tokenName: PropTypes.string,
   tokenAddress: PropTypes.object.isRequired,
-  tokenInfo: PropTypes.object.isRequired,
+  tokenInfo: PropTypes.object.isRequired
 }
 
 TokenIcon.defaultProps = {
-  tokenName: '',
+  tokenName: ''
 }
 
 export default TokenIcon

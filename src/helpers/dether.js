@@ -1,9 +1,8 @@
 import DetherJS from 'detherjs'
 import config from '../config/config'
 
-const getDether = async () => {
+const getDether = async (rpcURL) => {
   const detherJs = new DetherJS(false)
-  const { rpcURL } = config
 
   await detherJs.init({
     rpcURL

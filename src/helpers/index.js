@@ -5,8 +5,8 @@ export {
   getOpeningUnformated
 } from './timesTable'
 export { getValueExists } from './typeMethods'
-export {
-  buildTrustWalletUrl,
-  buildCryptoCompareUrl,
-  buildCoinGeckoUrl
-} from './cryptocompare'
+// export {
+//   buildTrustWalletUrl,
+//   buildCryptoCompareUrl,
+//   buildCoinGeckoUrl
+// } from './cryptocompare'

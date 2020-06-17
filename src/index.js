@@ -23,7 +23,7 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 // import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
 
 // import { Container, StyledPopup } from './styles/mapStyle'
-import config from './config/config'
+// import config from './config/config'
 
 import LoaderMap from './components/LoaderMap'
 import TellerCard from './components/TellerCard'
@@ -50,7 +50,8 @@ const SellerIcon = new L.Icon({
   iconRetinaUrl: require('./assets/Seller.svg')
 })
 
-export const DetherReactMap = ({ width, height, nightmode }) => {
+export const DetherReactMap = ({ width, height, rpcURL, nightmode }) => {
+  console.log('rpcURL COMPONENT', rpcURL)
   // const [showMore, setShowMore] = useState({})
   const [markers, setMarkers] = useState([])
   const [tellerMarkers, setTellerMarkers] = useState([])
@@ -60,7 +61,7 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
   // const [searchResultLayer, setSearchResultLayer] = useState(null)
   const [lat, setLat] = useState(0)
   const [lon, setLon] = useState(0)
-  // const [loader, setLoader] = useState({})
+  const [loader, setLoader] = useState({})
   const [allGeohashZone, setAllGeohashZone] = useState([])
   const [latLng, setLatLng] = useState(Geohash.decode('xn0m7m'))
   const [viewport, setViewport] = useState({
@@ -76,6 +77,7 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
   const [shopInfos, setShopInfos] = useState(false)
 
   const [tellerInfos, setTellerInfos] = useState(false)
+  const [rpcUrl, setRpcUrl] = useState(rpcURL)
 
   useEffect(() => {
     getPosition()
@@ -158,10 +160,10 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
     try {
       let tellerArray = []
       const shopsArray = []
-      const { rpcURL } = config
-      const detherJs = await getDether()
+      console.log('rpcURL getArrayOfGeohash', rpcUrl)
+      const detherJs = await getDether(rpcUrl)
 
-      const provider = new ethers.providers.JsonRpcProvider(rpcURL)
+      const provider = new ethers.providers.JsonRpcProvider(rpcUrl)
 
       const newLatLng = center
       const geoHash = Geohash.encode(newLatLng.lat, newLatLng.lon, 6)
@@ -231,11 +233,16 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
   }
 
   const reloadMap = () => {
+    console.log('rpcUrl reloadMap', rpcUrl)
+
     setLoader(true)
-    getArrayOfGeohash({
-      lat,
-      lon
-    })
+    getArrayOfGeohash(
+      {
+        lat,
+        lon
+      },
+      rpcUrl
+    )
   }
 
   const getPosition = async () => {
@@ -308,7 +315,7 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
     setMarker(marker)
   }
 
-  const viewPortChange = (viewport, zoom) => {
+  const viewPortChange = (viewport, zoom, rpcUrl) => {
     setLat(viewport.center[0])
     setLon(viewport.center[1])
     var distanceKm = distanceLatLng(
@@ -319,6 +326,7 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
       'K'
     )
     console.log('distanceKm', distanceKm)
+    console.log('rpcUrl viewport change', rpcUrl)
     if (
       viewport &&
       viewport.center &&
@@ -326,10 +334,13 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
       distanceKm > 1
     ) {
       setLatLng({ lat: viewport.center[0], lon: viewport.center[1] })
-      getArrayOfGeohash({
-        lat: viewport.center[0],
-        lon: viewport.center[1]
-      })
+      getArrayOfGeohash(
+        {
+          lat: viewport.center[0],
+          lon: viewport.center[1]
+        },
+        rpcUrl
+      )
     }
   }
 
@@ -345,7 +356,9 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
         preferCanvas
         removeAttribution={true}
         attributionControl={false}
-        onViewportChanged={(viewport, zoom) => viewPortChange(viewport, zoom)}
+        onViewportChanged={(viewport, zoom, rpcUrl) =>
+          viewPortChange(viewport, zoom, rpcUrl)
+        }
       >
         {/* <Search /> */}
         <ReactLeafletSearch
@@ -377,7 +390,7 @@ export const DetherReactMap = ({ width, height, nightmode }) => {
           appearance='contained'
           rounded
           // disabled={countryAvailable === false ? true : false}
-          onClick={() => reloadMap()}
+          onClick={() => reloadMap(rpcUrl)}
         >
           {/* <FormattedMessage
             id='home.buy.buttonRefresh'
