@@ -20,7 +20,7 @@ dist
 .eslintrc
 .editorconfig
 .travis.yml
-.
+.prettierrc
 
 
 npm-debug.log*
