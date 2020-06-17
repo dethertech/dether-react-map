@@ -4,7 +4,10 @@
   "description": "Dether map allowing users to locate shops",
   "author": "dethertech",
   "license": "MIT",
-  "repository": "dethertech/dether-react-map",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dethertech/detherJS.git"
+  },
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
