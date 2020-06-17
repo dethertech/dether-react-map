@@ -7,7 +7,7 @@ import { CardTitle, Row, Col } from 'reactstrap'
 
 import { getOpeningUnformated } from '../../helpers'
 
-import { FormattedMessage } from 'react-intl'
+// import { FormattedMessage } from 'react-intl'
 import {
   StyledContainer,
   StyledCard,

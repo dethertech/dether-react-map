@@ -16,7 +16,7 @@ const StyledP = styled.p`
 
 const StyledContainer = styled.div`
   overflow: auto;
-  height: 245px;
+  height: 276px;
   position: absolute;
   text-align: center;
   border-radius: 10px;

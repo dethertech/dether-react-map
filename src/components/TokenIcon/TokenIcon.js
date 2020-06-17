@@ -7,43 +7,6 @@ import LoaderSpinner from 'react-loader-spinner'
 import { availableTokens } from '../../constants/tokens'
 import { Svg } from '..'
 
-import erc20Icon from './icons/erc20.png'
-// import saiIcon from './icons/SAI.png'
-// import dthIcon from './icons/DTH.png'
-// import ethIcon from './icons/ETH.png'
-// import flixxIcon from './icons/FLIXX.png'
-// import havIcon from './icons/HAV.png'
-// import mftIcon from './icons/MFT.png'
-// import mkrIcon from './icons/MKR.png'
-// import susdIcon from './icons/SUSD.png'
-// import omgIcon from './icons/OMG.png'
-// import repIcon from './icons/REP.png'
-// import venIcon from './icons/VEN.png'
-// import wethIcon from './icons/WETH.png'
-// import zlaIcon from './icons/ZLA.png'
-// import zrxIcon from './icons/ZRX.png'
-
-// const icons = {
-//   //saiIcon,
-//   dthIcon,
-//   ethIcon,
-//   flixxIcon,
-//   // havIcon,
-//   // mftIcon,
-//   // mkrIcon,
-//   susdIcon,
-//   // omgIcon,
-//   // repIcon,
-//   // venIcon,
-//   // wethIcon,
-//   // zlaIcon,
-//   // zrxIcon,
-// }
-
-// const hasIcon = token => icons[`${token}Icon`] !== 'undefined'
-
-// const getIcon = token => icons[`${token.toLowerCase()}Icon`]
-
 function TokenIcon({
   tokenName,
   tokenAddress,
@@ -72,17 +35,6 @@ function TokenIcon({
       (fullName && token.toUpperCase() === fullName.toUpperCase())
   )
 
-  // const trustWalletFallback = (
-  //   <ReactImageFallback
-  //     src={buildTrustWalletUrl(tokenName, tokenAddress)}
-  //     style={style}
-  //     initialImage={initImage}
-  //     fallbackImage={erc20Icon}
-  //     alt={`${tokenName}-icon`}
-  //     className={`iconImage${tokenName}`}
-  //   />
-  // )
-
   // if in local SVG files
   if (tokens.length > 0) {
     return tokens.map((token, index) => (
@@ -90,14 +42,11 @@ function TokenIcon({
     ))
   }
 
-  // else try redux store tokenInfo logo src
   const localSrc =
     (tokenName &&
       tokenInfo[tokenName.toUpperCase()] &&
       tokenInfo[tokenName.toUpperCase()].logoUrl) ||
     ''
-
-  // else fallback try: trustWallet url or final fallback: local default erc20 image
 
   return (
     <div>

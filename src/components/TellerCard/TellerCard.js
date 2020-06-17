@@ -1,12 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react'
-// import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Icon, Text } from 'dether-ui'
 
 import { Row, Col } from 'reactstrap'
-import { bottomPadding } from '../../styles/platformLayout'
-// import ReviewsModal from '../ReviewsModal'
 import TokenIcon from '../../components/TokenIcon'
 import {
   StyledContainer,
@@ -23,9 +20,8 @@ import {
 /**
  * Actions
  */
-// import { appActions, apiActions, chatActions } from '../../actions'
 
-import { FormattedMessage } from 'react-intl'
+// import { FormattedMessage } from 'react-intl'
 
 class TellerCard extends Component {
   state = {
@@ -73,30 +69,6 @@ class TellerCard extends Component {
       isSellerCheck: true
     })
   }
-
-  // openChatChannel = () => {
-  //   const {
-  //     setSellerAddress,
-  //     tellerAddress,
-  //     sellerAddress,
-  //     pgpPubKeys
-  //   } = this.props
-
-  //   const haveStorePgpKey =
-  //     typeof pgpPubKeys[tellerAddress.toLowerCase()] !== 'undefined' &&
-  //     pgpPubKeys[tellerAddress.toLowerCase()] !== ''
-
-  //   const chatRedirectSet = sellerAddress === tellerAddress
-
-  //   if (haveStorePgpKey || chatRedirectSet) {
-  //     setSellerAddress(tellerAddress)
-  //     this.redirectToChat()
-  //   } else {
-  //     this.getPgpKeyPin(tellerAddress)
-  //     // TODO: set state: small loader on chat button
-  //   }
-  // }
-
   redirectToChat = () => setTimeout(() => this.redirectTo('/chat', 1000))
 
   render() {
@@ -115,7 +87,6 @@ class TellerCard extends Component {
 
       ticker
     } = this.props
-    // const { redirect, path, chatErrMess, showReviews } = this.state
 
     const fullStarSymb = (
       <span style={{ color: 'gold', fontSize: '21px', marginRight: '1.5px' }}>
@@ -123,29 +94,9 @@ class TellerCard extends Component {
       </span>
     )
 
-    // let drawerClasses = 'tellerCard-drawer'
-
-    // if (show) {
-
-    //   drawerClasses = 'tellerCard-drawer open'
-    // }
-
-    // if (showReviews) {
-    //   return (
-    //     <ReviewsModal
-    //       closeModal={this.closeModal}
-    //       path='/map/'
-    //       infoMessage={intl.formatMessage({ id: 'modal.review.rev' })}
-    //       setErrorMessage={this.toggleShowReviews}
-    //       infoTitle={intl.formatMessage({ id: 'modal.review.rev' })}
-    //       sellerAddress={tellerAddress}
-    //     />
-    //   )
-    // }
-
     return (
       <StyledContainer show={show}>
-        <StyledCard width='50%'>
+        <StyledCard>
           <StyledDivBW>
             <div onClick={close} style={{ float: 'right', margin: '10px' }}>
               <Icon size='sm' color='primary' name='close' />
@@ -185,7 +136,6 @@ class TellerCard extends Component {
                           review
                           {/* <FormattedMessage id='modal.review.rev' /> */}
                         </span>
-                        <br />
                         <StyledP>
                           <TokenIcon
                             tokenName='ETH'
@@ -316,21 +266,6 @@ class TellerCard extends Component {
           </StyledDivBW>
           <StyledCardFooter>
             <Row>
-              {/* <Col>
-                {hasNoPgpKey ? (
-                  chatErrMess[tellerAddress]
-                ) : (
-                  <Button
-                    style={{ width: '100%' }}
-                    color='primary'
-                    className='chat'
-                    responsive
-                    onClick={() => this.openChatChannel(tellerAddress)}
-                  >
-                    Chat
-                  </Button>
-                )}
-              </Col> */}
               {messenger && (
                 <Col>
                   <StyledTelegramButton
@@ -344,22 +279,8 @@ class TellerCard extends Component {
                   </StyledTelegramButton>
                 </Col>
               )}
-              {/* <Col align="center">
-                <Button
-                  style={{ width: '100%' }}
-                  color="primary"
-                  className="chat"
-                  responsive
-                  onClick={setShowReviews}
-                >
-                  {fullStarSymb}
-                </Button>
-              </Col> */}
             </Row>
-            <div style={bottomPadding} />
           </StyledCardFooter>
-          <div style={bottomPadding} />
-          <div style={bottomPadding} />
         </StyledCard>
       </StyledContainer>
     )

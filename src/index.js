@@ -4,41 +4,19 @@ import './styles.module.css'
 import getDether from './helpers/dether'
 import Geohash from 'latlon-geohash'
 import { ethers } from 'ethers'
-// import ReactMapGL, { Marker } from 'react-map-gl'
-// import { ReactLeafletSearch } from 'react-leaflet-search'
 import ReactLeafletSearch from 'react-leaflet-search'
-import { Button, Text } from 'dether-ui/lib'
+import { Button } from 'dether-ui/lib'
 import styled from 'styled-components'
 
-// leaflet
-// import './styles/leaflet.css'
 import 'leaflet/dist/leaflet.css'
-// import L from 'leaflet'
 
 import { Map, Marker, TileLayer } from 'react-leaflet'
-import { FormattedMessage, injectIntl } from 'react-intl'
+// import { FormattedMessage, injectIntl } from 'react-intl'
 
-// import DeckGL, { GeoJsonLayer } from 'deck.gl'
-// import Geocoder from 'react-map-gl-geocoder'
-// import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css'
-
-// import { Container, StyledPopup } from './styles/mapStyle'
-// import config from './config/config'
-
-import LoaderMap from './components/LoaderMap'
+// import LoaderMap from './components/LoaderMap'
 import TellerCard from './components/TellerCard'
-// import ReviewsModal from './components/ReviewsModal'
 import ShopCard from './components/ShopCard'
 import { currencyIdsTab, currencies } from './constants/currencies'
-
-// DATA TEST
-import { fakeComments, fakeShops } from './data'
-import Comment from './components/Comment'
-
-const WrapperMap = styled.div`
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-`
 
 const ShoppingCartIcon = new L.Icon({
   iconUrl: require('./assets/shop.svg'),
@@ -61,7 +39,7 @@ export const DetherReactMap = ({ width, height, rpcURL, nightmode }) => {
   // const [searchResultLayer, setSearchResultLayer] = useState(null)
   const [lat, setLat] = useState(0)
   const [lon, setLon] = useState(0)
-  const [loader, setLoader] = useState({})
+  // const [loader, setLoader] = useState({})
   const [allGeohashZone, setAllGeohashZone] = useState([])
   const [latLng, setLatLng] = useState(Geohash.decode('xn0m7m'))
   const [viewport, setViewport] = useState({
@@ -106,19 +84,6 @@ export const DetherReactMap = ({ width, height, rpcURL, nightmode }) => {
     })
     return currencies[name]
   }
-
-  // const handleOnResult = (e) => {
-  //   setSearchResultLayer(
-  //     new GeoJsonLayer({
-  //       id: 'search-result',
-  //       data: e.result.geometry,
-  //       getFillColor: [255, 0, 0, 128],
-  //       getRadius: 1000,
-  //       pointRadiusMinPixels: 10,
-  //       pointRadiusMaxPixels: 10
-  //     })
-  //   )
-  // }
 
   const getShopAddress = async (positionGeohash) => {
     const shopLatLng = getLatLong(positionGeohash)

@@ -12,7 +12,7 @@ import {
 
 const StyledContainer = styled.div`
   overflow: auto;
-  height: 345px;
+  height: 365px;
   position: absolute;
   text-align: center;
   border-radius: 10px;

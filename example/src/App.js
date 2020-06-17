@@ -73,7 +73,7 @@ const App = () => {
           <p>Example 2:</p>
         </Col>
         <Col md='12'>
-          <DetherReactMap width='100%' height='400px' rpcURL={rpcURL} />
+          <DetherReactMap width='100%' height='500px' rpcURL={rpcURL} />
         </Col>
       </Row>
       <Row>
