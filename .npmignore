@@ -1,0 +1,12 @@
+/src/
+/example/
+.travis.yml
+.prettierrc
+.eslintrc
+.eslintignore
+.editorconfig
+package-lock.json
+tsconfig.json
+tslint.json
+tsconfig.build.json
+

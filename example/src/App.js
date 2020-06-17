@@ -76,6 +76,11 @@ const App = () => {
           <DetherReactMap width='100%' height='400px' rpcURL={rpcURL} />
         </Col>
       </Row>
+      <Row>
+        <Col md='12'>
+          <p></p>
+        </Col>
+      </Row>
     </Container>
   )
 }
