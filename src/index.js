@@ -430,14 +430,14 @@ export const DetherReactMap = ({ width, height, rpcURL }) => {
 }
 
 DetherReactMap.propTypes = {
-  width: PropTypes.string,
-  height: PropTypes.string,
+  width: PropTypes.string, // CSS specific instruction
+  height: PropTypes.string, // CSS specific instruction
   rpcURL: PropTypes.string.isRequired
 }
 
 DetherReactMap.defaultProps = {
-  width: '100vw',
-  height: '100vh',
+  width: '100%',
+  height: '100%',
   rpcURL: 'https://kovan.infura.io/v3'
 }
 
