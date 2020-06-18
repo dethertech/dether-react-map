@@ -83,7 +83,7 @@ class TellerCard extends Component {
       currencyName,
       isBuyer,
       tellerAddress,
-      setShowReviews,
+      // setShowReviews,
 
       ticker
     } = this.props
@@ -123,7 +123,7 @@ class TellerCard extends Component {
                     <div style={{ display: 'flex' }}>
                       <span style={{ marginLeft: '1.7rem' }}>
                         {fullStarSymb}
-                        <span
+                        {/* <span
                           onClick={setShowReviews}
                           style={{
                             fontSize: '15px',
@@ -134,21 +134,16 @@ class TellerCard extends Component {
                           }}
                         >
                           review
-                          {/* <FormattedMessage id='modal.review.rev' /> */}
-                        </span>
+                        </span> */}
                         <StyledP>
                           <TokenIcon
                             tokenName='ETH'
-                            tokenAddress={''}
-                            tokenInfo={''}
                             height={'16'}
                             width={'16'}
                           />
                           {ticker === 'BTC' ? (
                             <TokenIcon
                               tokenName='BTC'
-                              tokenAddress={''}
-                              tokenInfo={''}
                               height={'16'}
                               width={'16'}
                             />
@@ -289,10 +284,10 @@ class TellerCard extends Component {
 
 TellerCard.propTypes = {
   show: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired,
-  sellerAddress: PropTypes.string.isRequired,
-  setShowReviews: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired
+  close: PropTypes.func.isRequired
+
+  // setShowReviews: PropTypes.func.isRequired,
+  // children: PropTypes.node.isRequired
 }
 
 export default TellerCard

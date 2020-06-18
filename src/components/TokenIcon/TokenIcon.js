@@ -9,7 +9,6 @@ import { Svg } from '..'
 
 function TokenIcon({
   tokenName,
-  tokenAddress,
   tokenInfo = {},
   height,
   width,
@@ -63,9 +62,7 @@ function TokenIcon({
 }
 
 TokenIcon.propTypes = {
-  tokenName: PropTypes.string,
-  tokenAddress: PropTypes.object.isRequired,
-  tokenInfo: PropTypes.object.isRequired
+  tokenName: PropTypes.string
 }
 
 TokenIcon.defaultProps = {

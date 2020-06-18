@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import axios from 'axios'
 import './styles.module.css'
 import getDether from './helpers/dether'
@@ -6,7 +7,6 @@ import Geohash from 'latlon-geohash'
 import { ethers } from 'ethers'
 import ReactLeafletSearch from 'react-leaflet-search'
 import { Button } from 'dether-ui/lib'
-import styled from 'styled-components'
 
 import 'leaflet/dist/leaflet.css'
 
@@ -28,8 +28,7 @@ const SellerIcon = new L.Icon({
   iconRetinaUrl: require('./assets/Seller.svg')
 })
 
-export const DetherReactMap = ({ width, height, rpcURL, nightmode }) => {
-  console.log('rpcURL COMPONENT', rpcURL)
+export const DetherReactMap = ({ width, height, rpcURL }) => {
   // const [showMore, setShowMore] = useState({})
   const [markers, setMarkers] = useState([])
   const [tellerMarkers, setTellerMarkers] = useState([])
@@ -43,8 +42,8 @@ export const DetherReactMap = ({ width, height, rpcURL, nightmode }) => {
   const [allGeohashZone, setAllGeohashZone] = useState([])
   const [latLng, setLatLng] = useState(Geohash.decode('xn0m7m'))
   const [viewport, setViewport] = useState({
-    width: width || '100%',
-    height: height || '100%',
+    width: width,
+    height: height,
     latitude: 48.858455,
     longitude: 7.294572,
     zoom: 12
@@ -125,7 +124,6 @@ export const DetherReactMap = ({ width, height, rpcURL, nightmode }) => {
     try {
       let tellerArray = []
       const shopsArray = []
-      console.log('rpcURL getArrayOfGeohash', rpcUrl)
       const detherJs = await getDether(rpcUrl)
 
       const provider = new ethers.providers.JsonRpcProvider(rpcUrl)
@@ -198,8 +196,6 @@ export const DetherReactMap = ({ width, height, rpcURL, nightmode }) => {
   }
 
   const reloadMap = () => {
-    console.log('rpcUrl reloadMap', rpcUrl)
-
     setLoader(true)
     getArrayOfGeohash(
       {
@@ -290,8 +286,6 @@ export const DetherReactMap = ({ width, height, rpcURL, nightmode }) => {
       viewport.center[1],
       'K'
     )
-    console.log('distanceKm', distanceKm)
-    console.log('rpcUrl viewport change', rpcUrl)
     if (
       viewport &&
       viewport.center &&
@@ -434,3 +428,17 @@ export const DetherReactMap = ({ width, height, rpcURL, nightmode }) => {
     // {loader === true ? <LoaderMap /> : ''}
   )
 }
+
+DetherReactMap.propTypes = {
+  width: PropTypes.string,
+  height: PropTypes.string,
+  rpcURL: PropTypes.string.isRequired
+}
+
+DetherReactMap.defaultProps = {
+  width: '100vw',
+  height: '100vh',
+  rpcURL: 'https://kovan.infura.io/v3'
+}
+
+// export default DetherReactMap

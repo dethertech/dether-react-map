@@ -10,12 +10,13 @@ import config from './config'
 
 const App = () => {
   const { rpcURL } = config
-  console.log('rpcURL example', rpcURL)
+  const width1 = '100%'
+  const height1 = '450px'
   return (
     <Container>
       <Row>
         <Col md='12'>
-          <div class='jumbotron'>
+          <div className='jumbotron'>
             <h2>Dether react map</h2>
             <p>Here it is example of how you can show the map.</p>
             <p>You can pass different size in props for height and width</p>
@@ -49,20 +50,11 @@ const App = () => {
           </p>
         </Col>
         <Col md='6'>
-          <DetherReactMap width='100%' height='400px' rpcURL={rpcURL} />
+          <DetherReactMap width={width1} height={height1} rpcURL={rpcURL} />
         </Col>
         <Col md='3'>
           {' '}
-          <ol>
-            <li class='list-item'>Lorem ipsum dolor sit amet</li>
-            <li class='list-item'>Consectetur adipiscing elit</li>
-            <li class='list-item'>Integer molestie lorem at massa</li>
-            <li class='list-item'>Facilisis in pretium nisl aliquet</li>
-            <li class='list-item'>Nulla volutpat aliquam velit</li>
-            <li class='list-item'>Faucibus porta lacus fringilla vel</li>
-            <li class='list-item'>Aenean sit amet erat nunc</li>
-            <li class='list-item'>Eget porttitor lorem</li>
-          </ol>
+          <p>You can put something else HERE </p>
         </Col>
       </Row>
       <Row>

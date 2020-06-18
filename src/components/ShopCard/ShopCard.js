@@ -55,7 +55,7 @@ class ShopCard extends Component {
       name,
       category,
       description,
-      setShowReviews,
+      // setShowReviews,
       address
     } = this.props
 
@@ -119,7 +119,7 @@ class ShopCard extends Component {
                   </span>
                 </Col>
               </Row>
-              <Row className='shop-row1'>
+              {/* <Row className='shop-row1'>
                 <Col>
                   <span>
                     {fullStarSymb}
@@ -133,12 +133,12 @@ class ShopCard extends Component {
                         color: '#3750ce'
                       }}
                     >
-                      {/* <FormattedMessage id='modal.review.rev' /> */}
+                     
                       Review
                     </span>
                   </span>
                 </Col>
-              </Row>
+              </Row> */}
             </StyledCardHeader>
 
             <StyledCardBody className='no-border'>
@@ -160,9 +160,7 @@ class ShopCard extends Component {
 
 ShopCard.propTypes = {
   show: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
-  setShowReviews: PropTypes.func.isRequired
+  close: PropTypes.func.isRequired
 }
 
 export default ShopCard
