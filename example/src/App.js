@@ -17,10 +17,7 @@ const App = () => {
         <Col md='12'>
           <div class='jumbotron'>
             <h2>Dether react map</h2>
-            <p>
-              Here it is example of how you can show the map. You can provide in
-              props different size.
-            </p>
+            <p>Here it is example of how you can show the map.</p>
             <p>You can pass different size in props for height and width</p>
           </div>
         </Col>
