@@ -13,7 +13,7 @@ import 'leaflet/dist/leaflet.css'
 import { Map, Marker, TileLayer } from 'react-leaflet'
 // import { FormattedMessage, injectIntl } from 'react-intl'
 
-// import LoaderMap from './components/LoaderMap'
+import LoaderMap from './components/LoaderMap'
 import TellerCard from './components/TellerCard'
 import ShopCard from './components/ShopCard'
 import { currencyIdsTab, currencies } from './constants/currencies'
@@ -38,7 +38,7 @@ export const DetherReactMap = ({ width, height, rpcURL }) => {
   // const [searchResultLayer, setSearchResultLayer] = useState(null)
   const [lat, setLat] = useState(0)
   const [lon, setLon] = useState(0)
-  // const [loader, setLoader] = useState({})
+  const [loader, setLoader] = useState({})
   const [allGeohashZone, setAllGeohashZone] = useState([])
   const [latLng, setLatLng] = useState(Geohash.decode('xn0m7m'))
   const [viewport, setViewport] = useState({
@@ -423,9 +423,9 @@ export const DetherReactMap = ({ width, height, rpcURL }) => {
           currencyName={currencyFormater()}
           close={() => setTellerInfos(false)}
         />
+        {loader === true ? <LoaderMap /> : ''}
       </Map>
     </div>
-    // {loader === true ? <LoaderMap /> : ''}
   )
 }
 

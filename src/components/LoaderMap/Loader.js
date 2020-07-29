@@ -12,8 +12,8 @@ import './Loader.style.scss'
  * Loader component
  */
 const LoaderMap = () => (
-  <div id="preloader" style={{ zIndex: 1099 }}>
-    <div id="loader" />
+  <div id='preloader' style={{ zIndex: 5099 }}>
+    <div id='loader' />
   </div>
 )
 
